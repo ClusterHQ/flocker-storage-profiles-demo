@@ -5,7 +5,7 @@ driver for flocker with docker 1.9.0+ and flocker 1.7.0+.
 
 *Status*: Work in progress. Would like review before making public.
 
-*TODO*: Put asciinema cast of the demo here.
+[![asciicast](https://asciinema.org/a/29940.png)](https://asciinema.org/a/29940)
 
 *TODO*: Add pretty pictures and directions for using the other fio
 		encapsulation.
