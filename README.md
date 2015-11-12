@@ -128,6 +128,28 @@ node $ docker run \
 -e JOBFILES=randwrite.fio clusterhq/fio-tool
 ```
 
+You can produce graphs of your test by running the following commands, the graphs will be in /tmp/fio-data on your `node`
+```
+node $ docker run -v /tmp/fio-data:/tmp/fio-data clusterhq/fio-genplots \
+-t NameOfYourTestForGraphs -b -g -p *_bw*
+
+node $ docker run -v /tmp/fio-data:/tmp/fio-data clusterhq/fio-genplots \
+-t NameOfYourTestForGraphs -b -g -p *_iops*
+```
+
+If you want to serve you graphs using HTTP to view them in a browser run the following command. 
+```
+node $ docker run -p 80:8000 -d \
+-v /tmp/fio-data:/tmp/fio-data \
+clusterhq/fio-plotserve
+```
+
+You should be able to go to `http://node` to view your graphs. Here is an example.
+
+*TODO* Put in pretty 2 line graph showing the difference between gold and bronze
+
+*TODO* Show how to run all the above command in one using `clusterhq/fiotools_aio`
+
 Scrolling up through the logs of the `fio` command you should see that the
 bronze job had about 100-300 IOPS whereas the gold job had around 2250 iops.
 This matches the expected IOPS for magnetic disks (Amazon docs say a burst to a
