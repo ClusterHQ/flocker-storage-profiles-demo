@@ -7,9 +7,6 @@ driver for flocker with docker 1.9.0+ and flocker 1.7.0+.
 
 [![asciicast](https://asciinema.org/a/29940.png)](https://asciinema.org/a/29940)
 
-*TODO*: Add pretty pictures and directions for using the other fio
-		encapsulation.
-
 # Problem
 
 Your storage provider offers a variety of different storage types, and you
@@ -29,8 +26,8 @@ to assist in exposing these varied storage options to your cluster.
   on your local machine.
 * An Amazon AWS account / credentials / ssh key. You could do a similar demo
   with another storage backend that has support for storage profiles with
-  minimal modifications to the demo. However setting up such a cluster is left
-  as an exercise for the reader.
+  minimal modifications to the demo. Setting up such a cluster is left as an
+  exercise for the reader.
 
 # Demo
 
@@ -45,22 +42,30 @@ For starters we will set up a single node cluster on amazon using the automated
 tools, basically following
 https://docs.clusterhq.com/en/1.7.0/labs/installer-getstarted.html.
 
+First create a new folder for walking through this demo, and cd into that
+directory:
+```
+local $ mkdir ~/storage-profiles
+local $ cd ~/storage-profiles
+```
+
 Get the sample files:
 ```
 local $ uft-flocker-sample-files
 ```
 
-Edit `terraform.tfvars` to have your amazon credentials. Also you can change
+Copy `terraform/terraform.tfvars.sample` to `terraform/terraform.tfvars` and
+edit it to have your Amazon credentials. Also you can change
 `agent_nodes = "2"` to be `agent_nodes = "1"` since we only need 1 node to
 demonstrate profile support.
 ```
 local $ cp terraform/terraform.tfvars.sample terraform/terraform.tfvars
-local $ vim terraform/terraform.tfvars
+local $ nano terraform/terraform.tfvars
 ```
 
 Spin up the nodes:
 ```
-local $ time uft-flocker-get-nodes --ubuntu-aws >& /dev/null && echo Done!
+local $ uft-flocker-get-nodes --ubuntu-aws
 ```
 
 Install and configure flocker on the nodes:
@@ -88,7 +93,7 @@ IP=<ip address of node>
 
 ## Constructing the volumes with different profiles.
 
-Create a new terminal and ssh into the node:
+ssh into the node:
 ```
 local $ ssh ubuntu@$IP
 ```
@@ -121,12 +126,18 @@ local $ uft-flocker-volumes list
 Back on the node we'll run fio to test the speed of the volumes.
 ```
 node $ docker run \
--e REMOTEFILES="https://gist.githubusercontent.com/sarum90/ec8b798c9f7e0fe9ac33/raw/fb251d5684bd03a0d969838267cb56fb71cb104f/randwrite.fio" \
+-e REMOTEFILES="https://gist.githubusercontent.com/sarum90/ec8b798c9f7e0fe9ac33/raw/05160dc854a9708db696abb0989b414663d9341f/randwrite.fio" \
 -v /tmp/fio-data:/tmp/fio-data \
 -v gold-volume:/gold \
 -v bronze-volume:/bronze \
 -e JOBFILES=randwrite.fio clusterhq/fio-tool
 ```
+
+Scrolling up through the logs of the `fio` command you should see that the
+bronze job had about 100-300 IOPS whereas the gold job had around 2250 iops.
+This matches the expected IOPS for magnetic disks (Amazon docs say a burst to a
+few hundred IOPS) and IOPS for a maximally provisioned 75 GiB volume on EBS (30
+IOPS per GiB for 75 GiB is 2250 IOPS).
 
 You can produce graphs of your test by running the following commands, the graphs will be in /tmp/fio-data on your `node`
 ```
@@ -146,15 +157,16 @@ clusterhq/fio-plotserve
 
 You should be able to go to `http://node` to view your graphs. Here is an example.
 
-*TODO* Put in pretty 2 line graph showing the difference between gold and bronze
+![IOPS Graph](https://raw.github.com/clusterhq/flocker-storage-profiles/demo/master/img/iops_comparison.png
+"Fig 1. IOPS Graph")
+
+*Figure 1. A graph of the IOPS for each individual job hammering the two
+volumes with writes over the time of the test.*
+
+*TODO* Put in pretty 2 line graph showing the difference between gold and bronze... and then probably remove the above one.
 
 *TODO* Show how to run all the above command in one using `clusterhq/fiotools_aio`
 
-Scrolling up through the logs of the `fio` command you should see that the
-bronze job had about 100-300 IOPS whereas the gold job had around 2250 iops.
-This matches the expected IOPS for magnetic disks (Amazon docs say a burst to a
-few hundred IOPS) and IOPS for a maximally provisioned 75 GiB volume on EBS (30
-IOPS per GiB for 75 GiB is 2250 IOPS).
 
 This ends the feature part of the demo, the rest is cleanup.
 
