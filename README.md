@@ -166,7 +166,8 @@ You should be able to go to `http://node` to view your graphs. Here is an exampl
 *Figure 1. A graph of the IOPS for each individual job hammering the two
 volumes with writes over the time of the test.*
 
-To make things slightly easier, you can run all 3 commands above in one. using `clusterhq/fiotools_aio`. This will run the test, generate plots, and serve them in one `docker run`
+To make things slightly easier, you can run all 3 commands above in one using `clusterhq/fiotools_aio`. This will run the test, generate plots, and serve them in one `docker run`
+command.
 ```
 docker run -p 80:8000 -v /tmp/fio-data \
 -e REMOTEFILES="https://gist.githubusercontent.com/sarum90/ec8b798c9f7e0fe9ac33/raw/05160dc854a9708db696abb0989b414663d9341f/randwrite.fio" \
