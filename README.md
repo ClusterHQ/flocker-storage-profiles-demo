@@ -161,13 +161,20 @@ clusterhq/fio-plotserve
 
 You should be able to go to `http://node` to view your graphs. Here is an example.
 
-![IOPS Graph](https://raw.github.com/clusterhq/flocker-storage-profiles/demo/master/img/iops_comparison.png
-"Fig 1. IOPS Graph")
+![IOPS Graph](../blob/master/iops_comparison.png?raw=true "Fig 1. IOPS Graph")
 
 *Figure 1. A graph of the IOPS for each individual job hammering the two
 volumes with writes over the time of the test.*
 
-*TODO* Show how to run all the above command in one using `clusterhq/fiotools_aio`
+To make things slightly easier, you can run all 3 commands above in one. using `clusterhq/fiotools_aio`. This will run the test, generate plots, and serve them in one `docker run`
+```
+docker run -p 80:8000 -v /tmp/fio-data \
+-e REMOTEFILES="https://gist.githubusercontent.com/sarum90/ec8b798c9f7e0fe9ac33/raw/05160dc854a9708db696abb0989b414663d9341f/randwrite.fio" \
+-e JOBFILES=randwrite.fio -e PLOTNAME=MyTest \
+-v ryan-gold-volume:/gold \
+-v ryan-bronze-volume:/bronze \
+-d --name MyTest clusterhq/fiotools-aio
+```
 
 This ends the feature part of the demo, the rest is cleanup.
 
