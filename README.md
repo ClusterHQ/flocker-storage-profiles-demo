@@ -175,7 +175,7 @@ This ends the feature part of the demo, the rest is cleanup.
 Remove all containers on the node, specifically the fio one that was using the volumes.
 ```
 node $ docker ps -a
-node $ docker rm ids of the containers.
+node $ docker rm <ids of the containers>
 node $ docker ps -a # should see nothing
 ```
 
