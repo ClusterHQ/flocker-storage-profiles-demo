@@ -3,7 +3,8 @@
 This is a simple demonstration of Flocker Storage Profiles on AWS using the EBS
 driver for flocker with docker 1.9.0+ and flocker 1.7.0+.
 
-*Status*: Work in progress. Would like review before making public.
+*Status*: Work in progress. Would like review before making public. Although I
+think it has to be public for the images to work?
 
 [![asciicast](https://asciinema.org/a/29940.png)](https://asciinema.org/a/29940)
 
@@ -123,7 +124,10 @@ local $ uft-flocker-volumes list
 
 ## Verifying the different profiles.
 
-Back on the node we'll run fio to test the speed of the volumes.
+Back on the node we'll run fio to test the speed of the volumes. This runs fio
+against both the bronze and the gold volumes using the parameters specified by
+Amazon for testing your volumes. You might also try using a [single job fio
+file](https://gist.githubusercontent.com/sarum90/25cde7e923cd347c5378/raw/8692efb0896a7b18547a653cdcd1464cc718b587/monojobrandwrite.fio).
 ```
 node $ docker run \
 -e REMOTEFILES="https://gist.githubusercontent.com/sarum90/ec8b798c9f7e0fe9ac33/raw/05160dc854a9708db696abb0989b414663d9341f/randwrite.fio" \
@@ -163,10 +167,7 @@ You should be able to go to `http://node` to view your graphs. Here is an exampl
 *Figure 1. A graph of the IOPS for each individual job hammering the two
 volumes with writes over the time of the test.*
 
-*TODO* Put in pretty 2 line graph showing the difference between gold and bronze... and then probably remove the above one.
-
 *TODO* Show how to run all the above command in one using `clusterhq/fiotools_aio`
-
 
 This ends the feature part of the demo, the rest is cleanup.
 
