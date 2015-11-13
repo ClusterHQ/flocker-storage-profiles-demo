@@ -161,7 +161,7 @@ clusterhq/fio-plotserve
 
 You should be able to go to `http://node` to view your graphs. Here is an example.
 
-![IOPS Graph](../ryantodo/iops_comparison.png?raw=true "Fig 1. IOPS Graph")
+![IOPS Graph](../master/iops_comparison.png?raw=true "Fig 1. IOPS Graph")
 
 *Figure 1. A graph of the IOPS for each individual job hammering the two
 volumes with writes over the time of the test.*
