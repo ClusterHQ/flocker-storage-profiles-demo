@@ -3,8 +3,9 @@
 This is a simple demonstration of Flocker Storage Profiles on AWS using the EBS
 driver for flocker with docker 1.9.0+ and flocker 1.7.0+.
 
-*Status*: Work in progress. Would like review before making public. Although I
-think it has to be public for the images to work?
+Feel free to watch the following asciinema recording if you want to watch someone go
+through this demo. We recommend following along with the directions while you watch
+the cast.
 
 [![asciicast](https://asciinema.org/a/29940.png)](https://asciinema.org/a/29940)
 
