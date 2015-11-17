@@ -173,8 +173,8 @@ command.
 docker run -p 80:8000 -v /tmp/fio-data \
 -e REMOTEFILES="https://gist.githubusercontent.com/sarum90/ec8b798c9f7e0fe9ac33/raw/05160dc854a9708db696abb0989b414663d9341f/randwrite.fio" \
 -e JOBFILES=randwrite.fio -e PLOTNAME=MyTest \
--v ryan-gold-volume:/gold \
--v ryan-bronze-volume:/bronze \
+-v gold-volume:/gold \
+-v bronze-volume:/bronze \
 -d --name MyTest clusterhq/fiotools-aio
 ```
 
